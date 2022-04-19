@@ -1,4 +1,4 @@
-package engine;
+package battleship.org.equipment;
 
 public enum Ship {
     AIRCRAFT_CARRIER(5, "Aircraft Carrier"),
