@@ -6,6 +6,8 @@ import battleship.org.equipment.Ship;
 
 import java.util.Scanner;
 
+import static battleship.org.equipment.Constant.*;
+
 public class Game {
     private final Battlefield battlefieldPlayer;
     private final Battlefield battlefieldOpponent;
@@ -17,50 +19,45 @@ public class Game {
         this.scanner = scanner;
     }
 
-
     public void play() {
         System.out.println("Player 1, place your ships to the game field");
 
         System.out.println(battlefieldPlayer.displayPrimary());
         getCoordinatesShips(battlefieldPlayer);
-        battlefieldPlayer.fillFieldWithFog();
-        passTheMove(Constant.PASS_MOVE);
+        passTheMove(PASS_MOVE);
 
         System.out.println("Player 2, place your ships to the game field");
 
         System.out.println(battlefieldOpponent.displayPrimary());
         getCoordinatesShips(battlefieldOpponent);
-        battlefieldOpponent.fillFieldWithFog();
-        passTheMove(Constant.PASS_MOVE);
+        passTheMove(PASS_MOVE);
         fight();
     }
 
     private void fight() {
         System.out.println("The game starts!");
         while (battlefieldPlayer.checkAliveShip() || battlefieldOpponent.checkAliveShip()) {
-            System.out.println(battlefieldOpponent.displayShadow());
-            System.out.println(Constant.DELIMETR);
+            System.out.println(battlefieldOpponent.displayEnemy());
+            System.out.println(DELIMETR);
             System.out.println(battlefieldPlayer.displayPrimary());
-
-            System.out.println(Constant.PLAYER_ONE);
+            System.out.println(PLAYER_ONE);
             getCoordinatesShot(battlefieldOpponent);
-            passTheMove(Constant.PASS_MOVE);
+            passTheMove(PASS_MOVE);
 
             if (battlefieldOpponent.checkAliveShip()) {
-                System.out.println(battlefieldPlayer.displayShadow());
-                System.out.println(Constant.DELIMETR);
+                System.out.println(battlefieldPlayer.displayEnemy());
+                System.out.println(DELIMETR);
                 System.out.println(battlefieldOpponent.displayPrimary());
-                System.out.println(Constant.PLAYER_TWO);
+                System.out.println(PLAYER_TWO);
                 getCoordinatesShot(battlefieldPlayer);
-                passTheMove(Constant.PASS_MOVE);
+                passTheMove(PASS_MOVE);
             }
         }
     }
 
     private void passTheMove(String msg) {
         System.out.println(msg);
-        Scanner scanner = new Scanner(System.in);
-
+        scanner.nextLine();
         String enter = scanner.nextLine();
         System.out.println(enter);
         while (true) {
@@ -69,10 +66,9 @@ public class Game {
                 break;
             }
         }
-
     }
 
-    private Mark getCoordinatesShot(Battlefield fieldOfPlayer) {
+    private void getCoordinatesShot(Battlefield fieldOfPlayer) {
         Mark flag;
         while (true) {
             String coordinates = scanner.next().toUpperCase().trim();
@@ -84,7 +80,6 @@ public class Game {
                 System.out.println(e.getMessage());
             }
         }
-        return flag;
     }
 
     private void getCoordinatesShips(Battlefield fieldOfPlayer) {

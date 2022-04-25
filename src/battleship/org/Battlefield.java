@@ -9,25 +9,11 @@ import java.util.Map;
 
 public class Battlefield {
     private final Designations[][] battleField = new Designations[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
-    private final Designations[][] battleFieldShadowed = new Designations[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
     private Map<Ship, Coordinates[]> shipOfPlayer = new HashMap<>();
-
 
     protected Battlefield() {
         for (Designations[] designations : battleField) {
             Arrays.fill(designations, Designations.FOG);
-        }
-    }
-
-    protected void fillFieldWithFog() {
-        for (int i = 0; i < battleField.length; i++) {
-            for (int j = 0; j < battleField[i].length; j++) {
-                if (Designations.HIT == battleField[i][j] || Designations.MISS == battleField[i][j]) {
-                    battleFieldShadowed[i][j] = battleField[i][j];
-                } else {
-                    battleFieldShadowed[i][j] = Designations.FOG;
-                }
-            }
         }
     }
 
@@ -142,8 +128,29 @@ public class Battlefield {
         return display(battleField);
     }
 
-    public String displayShadow() {
-        return display(battleFieldShadowed);
+    public String displayEnemy() {
+        return displayShadow(battleField);
+    }
+
+    private String displayShadow(Designations[][] battleField) {
+        var builder = new StringBuilder();
+        builder.append("  1 2 3 4 5 6 7 8 9 10");
+        builder.append(Constant.NEW_LINE);
+        for (int i = 0; i < battleField.length; i++) {
+            for (int j = 0; j < battleField[i].length; j++) {
+                if (j == 0) {
+                    builder.append((char) (65 + i)).append(Constant.SPACE);
+                }
+                switch (battleField[i][j]) {
+                    case FOG, CELL -> builder.append(Designations.FOG.getMark());
+                    case HIT -> builder.append(Designations.HIT.getMark());
+                    case MISS -> builder.append(Designations.MISS.getMark());
+                }
+                if (j < 9) builder.append(Constant.SPACE);
+            }
+            if (i < 9) builder.append(Constant.NEW_LINE);
+        }
+        return builder.toString();
     }
 
     private String display(Designations[][] battleField) {

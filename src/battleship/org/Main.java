@@ -1,5 +1,6 @@
 package battleship.org;
 
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class Main {
@@ -9,6 +10,5 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Game game = new Game(player, opponent, scanner);
         game.play();
-
     }
 }
