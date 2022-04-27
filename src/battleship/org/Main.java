@@ -1,6 +1,5 @@
 package battleship.org;
 
-import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class Main {

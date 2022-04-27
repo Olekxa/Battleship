@@ -1,27 +1,31 @@
 package battleship.org.equipment;
 
-public enum Ship {
-    AIRCRAFT_CARRIER(5, "Aircraft Carrier"),
-   BATTLESHIP(4, "Battleship"),
-    SUBMARINE(3, "Submarine"),
-    CRUISER(3, "Cruiser"),
-    DESTROYER(2, "Destroyer");
+import java.util.List;
 
-    final int sell;
-    final String type;
+public class Ship {
+    private final ShipTypes type;
+    private final List<Coordinates> compartments;
 
-    Ship(int sell, String type) {
-        this.sell = sell;
+    public Ship(ShipTypes type, List<Coordinates> compartments) {
         this.type = type;
+        this.compartments = compartments;
     }
 
-    public int getSell() {
-        return sell;
+    public boolean isShipAlive() {
+        return compartments.stream()
+                .anyMatch(x -> x.getStatus().equals(Designations.CELL));
     }
 
-    public String getType() {
-        return type;
+    public boolean exist(int x, int y) {
+        for (Coordinates compartment : compartments) {
+            if (compartment.getY() == y && compartment.getX() == x) {
+                return true;
+            }
+        }
+        return false;
     }
 
-
+    public List<Coordinates> getCompartments() {
+        return compartments;
+    }
 }
