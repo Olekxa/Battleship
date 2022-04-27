@@ -1,8 +1,8 @@
 package battleship.org.equipment;
 
 public class Coordinates {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private Designations status;
 
     public Coordinates(int x, int y, Designations status) {
