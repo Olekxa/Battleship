@@ -20,9 +20,9 @@ public class Battlefield {
     }
 
     protected void placeShip(ShipTypes shipClass, String[] coordinates) {
-        var x = coordinates[0].charAt(0) - 65;
+        var x = fromCharToInt(coordinates[0].charAt(0));
         var y = Integer.parseInt(coordinates[0].substring(1)) - 1;
-        var x1 = coordinates[1].charAt(0) - 65;
+        var x1 = fromCharToInt(coordinates[1].charAt(0));
         var y1 = Integer.parseInt(coordinates[1].substring(1)) - 1;
 
         if (x >= Constant.FIELD_SIZE || x < 0 ||
