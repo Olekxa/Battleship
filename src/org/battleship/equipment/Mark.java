@@ -1,4 +1,4 @@
-package battleship.org.equipment;
+package org.battleship.equipment;
 
 public enum Mark {
     GAME_OVER("You sank the last ship. You won. Congratulations!"),

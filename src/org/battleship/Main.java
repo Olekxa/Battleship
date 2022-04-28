@@ -1,4 +1,4 @@
-package battleship.org;
+package org.battleship;
 
 import java.util.Scanner;
 

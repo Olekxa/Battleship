@@ -1,4 +1,4 @@
-package battleship.org.equipment;
+package org.battleship.equipment;
 
 public enum ShipTypes {
     AIRCRAFT_CARRIER(5, "Aircraft Carrier"),
@@ -7,16 +7,16 @@ public enum ShipTypes {
     CRUISER(3, "Cruiser"),
     DESTROYER(2, "Destroyer");
 
-    final int sell;
+    final int cell;
     final String type;
 
-    ShipTypes(int sell, String type) {
-        this.sell = sell;
+    ShipTypes(int cell, String type) {
+        this.cell = cell;
         this.type = type;
     }
 
-    public int getSell() {
-        return sell;
+    public int getCell() {
+        return cell;
     }
 
     public String getType() {

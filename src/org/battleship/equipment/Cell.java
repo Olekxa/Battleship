@@ -1,11 +1,11 @@
-package battleship.org.equipment;
+package org.battleship.equipment;
 
-public class Coordinates {
+public class Cell {
     private final int x;
     private final int y;
     private Designations status;
 
-    public Coordinates(int x, int y, Designations status) {
+    public Cell(int x, int y, Designations status) {
         this.x = x;
         this.y = y;
         this.status = status;
@@ -18,7 +18,6 @@ public class Coordinates {
     public int getX() {
         return x;
     }
-
 
     public int getY() {
         return y;

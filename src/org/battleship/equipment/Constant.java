@@ -1,4 +1,4 @@
-package battleship.org.equipment;
+package org.battleship.equipment;
 
 public class Constant {
 
@@ -8,5 +8,8 @@ public class Constant {
     public final static String PASS_MOVE = "Press Enter and pass the move to another player";
     public final static String PLAYER_ONE = "Player 1, it's your turn:";
     public final static String PLAYER_TWO = "Player 2, it's your turn:";
-    public final static String DELIMETR = "---------------------";
+    public final static String DELIMITER = "---------------------";
+    public final static int VERTICAL = 1;
+    public final static int HORIZONTAL = 0;
+
 }

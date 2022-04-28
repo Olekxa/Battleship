@@ -1,4 +1,4 @@
-package battleship.org.equipment;
+package org.battleship.equipment;
 
 public enum Designations {
     FOG("~"),

@@ -1,11 +1,11 @@
-package battleship.org;
+package org.battleship;
 
-import battleship.org.equipment.Mark;
-import battleship.org.equipment.ShipTypes;
+import org.battleship.equipment.Mark;
+import org.battleship.equipment.ShipTypes;
 
 import java.util.Scanner;
 
-import static battleship.org.equipment.Constant.*;
+import static org.battleship.equipment.Constant.*;
 
 public class Game {
     private final Battlefield battlefieldPlayer;
@@ -22,13 +22,13 @@ public class Game {
         System.out.println("Player 1, place your ships to the game field");
 
         System.out.println(battlefieldPlayer.displayPrimary());
-        getCoordinatesShips(battlefieldPlayer);
+        readCoordinatesShips(battlefieldPlayer);
         passTheMove(PASS_MOVE);
 
         System.out.println("Player 2, place your ships to the game field");
 
         System.out.println(battlefieldOpponent.displayPrimary());
-        getCoordinatesShips(battlefieldOpponent);
+        readCoordinatesShips(battlefieldOpponent);
         passTheMove(PASS_MOVE);
         fight();
     }
@@ -37,23 +37,24 @@ public class Game {
         System.out.println("The game starts!");
         while (battlefieldPlayer.checkIsAliveFleet() && battlefieldOpponent.checkIsAliveFleet()) {
             System.out.println(battlefieldOpponent.displayEnemy());
-            System.out.println(DELIMETR);
+            System.out.println(DELIMITER);
             System.out.println(battlefieldPlayer.displayPrimary());
             System.out.println(PLAYER_ONE);
-            if (Mark.GAME_OVER.equals(getCoordinatesShot(battlefieldOpponent))) {
-                System.out.println(Mark.GAME_OVER.getMessage());
+            Mark mark = readCoordinatesShot(battlefieldOpponent);
+            System.out.println(mark.getMessage());
+            if (Mark.GAME_OVER.equals(mark)) {
                 return;
             }
             passTheMove(PASS_MOVE);
 
             if (battlefieldOpponent.checkIsAliveFleet()) {
                 System.out.println(battlefieldPlayer.displayEnemy());
-                System.out.println(DELIMETR);
+                System.out.println(DELIMITER);
                 System.out.println(battlefieldOpponent.displayPrimary());
                 System.out.println(PLAYER_TWO);
-                getCoordinatesShot(battlefieldPlayer);
-                if (Mark.GAME_OVER.equals(getCoordinatesShot(battlefieldPlayer))) {
-                    System.out.println(Mark.GAME_OVER.getMessage());
+                mark = readCoordinatesShot(battlefieldPlayer);
+                System.out.println(mark.getMessage());
+                if (Mark.GAME_OVER.equals(mark)) {
                     return;
                 }
                 passTheMove(PASS_MOVE);
@@ -74,7 +75,7 @@ public class Game {
         }
     }
 
-    private Mark getCoordinatesShot(Battlefield fieldOfPlayer) {
+    private Mark readCoordinatesShot(Battlefield fieldOfPlayer) {
         while (true) {
             String coordinates = scanner.next().toUpperCase().trim();
             try {
@@ -85,9 +86,9 @@ public class Game {
         }
     }
 
-    private void getCoordinatesShips(Battlefield fieldOfPlayer) {
+    private void readCoordinatesShips(Battlefield fieldOfPlayer) {
         for (ShipTypes shipClass : ShipTypes.values()) {
-            System.out.printf("Enter the coordinates of the %s (%d cells):%n", shipClass.getType(), shipClass.getSell());
+            System.out.printf("Enter the coordinates of the %s (%d cells):%n", shipClass.getType(), shipClass.getCell());
             while (true) {
                 String[] coordinates = new String[]{scanner.next().toUpperCase(), scanner.next().toUpperCase()};
                 try {

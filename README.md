@@ -8,4 +8,4 @@ It looks like everything is ready for full-scale battlefield maneuvers! This tim
 Previous step:
 To complete this step, you should add a check that all the ships were successfully sunk. The game is supposed to go on until all ships go down. The program should print an extra message You sank a ship! when all the cells of a particular ship have been hit. Take a look at the examples below!
 
-For the sake of simplicity; the project does not consider shots to coordinates that are already shot at to be any different. Regardless of whether the coordinate was previously a hit or a miss, you should display You hit a ship! and You missed! again respectively.
+For the sake of simplicity; the project does not consider shots to cell that are already shot at to be any different. Regardless of whether the coordinate was previously a hit or a miss, you should display You hit a ship! and You missed! again respectively.
