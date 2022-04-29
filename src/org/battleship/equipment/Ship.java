@@ -13,7 +13,7 @@ public class Ship {
 
     public boolean isShipAlive() {
         return compartments.stream()
-                .anyMatch(x -> x.getStatus().equals(Designations.CELL));
+                .anyMatch(x -> !x.isPointedFire());
     }
 
     public boolean exist(int x, int y) {

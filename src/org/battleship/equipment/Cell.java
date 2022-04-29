@@ -3,16 +3,30 @@ package org.battleship.equipment;
 public class Cell {
     private final int x;
     private final int y;
-    private Designations status;
+    boolean pointedFire;
+    boolean placedShip;
 
-    public Cell(int x, int y, Designations status) {
+    public Cell(int x, int y, boolean placedShip) {
         this.x = x;
         this.y = y;
-        this.status = status;
+        this.placedShip = placedShip;
+        this.pointedFire = false;
     }
 
-    public void setStatus(Designations status) {
-        this.status = status;
+    public boolean isPointedFire() {
+        return pointedFire;
+    }
+
+    public boolean isPlacedShip() {
+        return placedShip;
+    }
+
+    public void setPointedFire(boolean pointedFire) {
+        this.pointedFire = pointedFire;
+    }
+
+    public void setPlacedShip(boolean placedShip) {
+        this.placedShip = placedShip;
     }
 
     public int getX() {
@@ -22,8 +36,5 @@ public class Cell {
     public int getY() {
         return y;
     }
-
-    public Designations getStatus() {
-        return status;
-    }
 }
+

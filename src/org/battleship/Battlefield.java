@@ -13,7 +13,7 @@ public class Battlefield {
         this.fieldOfBattle = new Cell[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
         for (int i = 0; i < fieldOfBattle.length; i++) {
             for (int j = 0; j < fieldOfBattle[i].length; j++) {
-                fieldOfBattle[i][j] = new Cell(i, j, Designations.FOG);
+                fieldOfBattle[i][j] = new Cell(i, j, false);
             }
         }
     }
@@ -51,13 +51,13 @@ public class Battlefield {
         List<Cell> locationOfShip = new ArrayList<>();
         if (Constant.VERTICAL == positionInSpace) {
             for (int i = start[1]; i <= end[1]; i++) {
-                fieldOfBattle[start[0]][i].setStatus(Designations.CELL);
-                locationOfShip.add(new Cell(start[0], i, Designations.CELL));
+                fieldOfBattle[start[0]][i].setPlacedShip(true);
+                locationOfShip.add(new Cell(start[0], i, true));
             }
         } else {
             for (int i = start[0]; i <= end[0]; i++) {
-                fieldOfBattle[i][start[1]].setStatus(Designations.CELL);
-                locationOfShip.add(new Cell(i, start[1], Designations.CELL));
+                fieldOfBattle[i][start[1]].setPlacedShip(true);
+                locationOfShip.add(new Cell(i, start[1], true));
             }
         }
         fleet.add(new Ship(shipClass, locationOfShip));
@@ -71,31 +71,29 @@ public class Battlefield {
                 y >= Constant.FIELD_SIZE || y < 0) {
             throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
         }
-        mark(x, y, Designations.HIT);
-        if (Designations.CELL.equals(fieldOfBattle[x][y].getStatus()) || Designations.HIT.equals(fieldOfBattle[x][y].getStatus())) {
-            fieldOfBattle[x][y].setStatus(Designations.HIT);
-            if (!isShipAlive(x, y) && checkIsAliveFleet()) {
+        mark(x, y);
+        if (fieldOfBattle[x][y].isPlacedShip() || fieldOfBattle[x][y].isPointedFire()) {
+            fieldOfBattle[x][y].setPointedFire(true);
+            if (isShipSank(x, y) && checkIsAliveFleet()) {
                 return Mark.GAME_CONTINUOUS_SINK_SHIP;
             }
             return checkIsAliveFleet() ? Mark.GAME_CONTINUOUS : Mark.GAME_OVER;
         }
-       fieldOfBattle[x][y].setStatus(Designations.MISS);
+        fieldOfBattle[x][y].setPointedFire(true);
         return Mark.GAME_CONTINUOUS_MISS;
     }
 
-    private boolean isShipAlive(int x, int y) {
-        return !fleet.stream()
+    private boolean isShipSank(int x, int y) {
+        return fleet.stream()
                 .filter(z -> z.exist(x, y))
-                .filter(Ship::isShipAlive)
-                .toList()
-                .isEmpty();
+                .noneMatch(Ship::isShipAlive);
     }
 
-    private void mark(int x, int y, Designations designations) {
+    private void mark(int x, int y) {
         for (Ship ship : fleet) {
             for (Cell cell : ship.getCompartments()) {
                 if (cell.getX() == x && cell.getY() == y) {
-                    cell.setStatus(designations);
+                    cell.setPointedFire(true);
                 }
             }
         }
@@ -118,11 +116,14 @@ public class Battlefield {
                 if (j == 0) {
                     builder.append(fromIntToChar(i)).append(Constant.SPACE);
                 }
-                switch (fieldOfBattle[i][j].getStatus()) {
-                    case FOG -> builder.append(Designations.FOG.getMark());
-                    case CELL -> builder.append(designations.getMark());
-                    case HIT -> builder.append(Designations.HIT.getMark());
-                    case MISS -> builder.append(Designations.MISS.getMark());
+                if (!fieldOfBattle[i][j].isPointedFire() && !fieldOfBattle[i][j].isPlacedShip()) {
+                    builder.append(Designations.FOG.getMark());
+                } else if (fieldOfBattle[i][j].isPointedFire() && fieldOfBattle[i][j].isPlacedShip()) {
+                    builder.append(Designations.HIT.getMark());
+                } else if (fieldOfBattle[i][j].isPointedFire() && !fieldOfBattle[i][j].isPlacedShip()) {
+                    builder.append(Designations.MISS.getMark());
+                } else {
+                    builder.append(designations.getMark());
                 }
                 if (j < 9) builder.append(Constant.SPACE);
             }
@@ -139,7 +140,7 @@ public class Battlefield {
 
         for (int a = startPosX; a <= endPosX; a++) {
             for (int b = startPosY; b <= endPosY; b++) {
-                if (fieldOfBattle[a][b].getStatus().equals(Designations.CELL)) {
+                if (fieldOfBattle[a][b].isPlacedShip()) {
                     throw new IllegalArgumentException("Error! You placed it too close to another one. Try again:");
                 }
             }
