@@ -116,18 +116,24 @@ public class Battlefield {
                 if (j == 0) {
                     builder.append(fromIntToChar(i)).append(Constant.SPACE);
                 }
-                if (!fieldOfBattle[i][j].isPointedFire() && !fieldOfBattle[i][j].isPlacedShip()) {
-                    builder.append(Designations.FOG.getMark());
-                } else if (fieldOfBattle[i][j].isPointedFire() && fieldOfBattle[i][j].isPlacedShip()) {
-                    builder.append(Designations.HIT.getMark());
-                } else if (fieldOfBattle[i][j].isPointedFire() && !fieldOfBattle[i][j].isPlacedShip()) {
-                    builder.append(Designations.MISS.getMark());
+                Designations mark;
+                if (fieldOfBattle[i][j].isPointedFire()) {
+                    if (fieldOfBattle[i][j].isPlacedShip()) {
+                        mark = Designations.HIT;
+                    } else {
+                        mark = Designations.MISS;
+                    }
                 } else {
-                    builder.append(designations.getMark());
+                    if (fieldOfBattle[i][j].isPlacedShip()) {
+                        mark = designations;
+                    } else {
+                        mark = Designations.FOG;
+                    }
                 }
-                if (j < 9) builder.append(Constant.SPACE);
+                builder.append(mark.getMark());
+                if (j < Constant.FIELD_SIZE - 1) builder.append(Constant.SPACE);
             }
-            if (i < 9) builder.append(Constant.NEW_LINE);
+            if (i < Constant.FIELD_SIZE - 1) builder.append(Constant.NEW_LINE);
         }
         return builder.toString();
     }
@@ -148,11 +154,11 @@ public class Battlefield {
     }
 
     private int fromCharToInt(char a) {
-        return a - 65;
+        return (a - 'A');
     }
 
     private char fromIntToChar(int i) {
-        return (char) (65 + i);
+        return (char) ('A' + i );
     }
 }
 

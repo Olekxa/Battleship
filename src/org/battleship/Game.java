@@ -12,9 +12,9 @@ public class Game {
     private final Battlefield battlefieldOpponent;
     private final Scanner scanner;
 
-    public Game(Battlefield battlefieldPlayer, Battlefield battlefieldOpponent, Scanner scanner) {
-        this.battlefieldPlayer = battlefieldPlayer;
-        this.battlefieldOpponent = battlefieldOpponent;
+    public Game(Scanner scanner) {
+        this.battlefieldPlayer = new Battlefield();
+        this.battlefieldOpponent = new Battlefield();
         this.scanner = scanner;
     }
 
@@ -23,13 +23,13 @@ public class Game {
 
         System.out.println(battlefieldPlayer.displayPrimary());
         readCoordinatesShips(battlefieldPlayer);
-        passTheMove(PASS_MOVE);
+        passTheMove();
 
         System.out.println("Player 2, place your ships to the game field");
 
         System.out.println(battlefieldOpponent.displayPrimary());
         readCoordinatesShips(battlefieldOpponent);
-        passTheMove(PASS_MOVE);
+        passTheMove();
         fight();
     }
 
@@ -45,7 +45,7 @@ public class Game {
             if (Mark.GAME_OVER.equals(mark)) {
                 return;
             }
-            passTheMove(PASS_MOVE);
+            passTheMove();
 
             if (battlefieldOpponent.checkIsAliveFleet()) {
                 System.out.println(battlefieldPlayer.displayEnemy());
@@ -57,13 +57,13 @@ public class Game {
                 if (Mark.GAME_OVER.equals(mark)) {
                     return;
                 }
-                passTheMove(PASS_MOVE);
+                passTheMove();
             }
         }
     }
 
-    private void passTheMove(String msg) {
-        System.out.println(msg);
+    private void passTheMove() {
+        System.out.println(PASS_MOVE);
         scanner.nextLine();
         String enter = scanner.nextLine();
         System.out.println(enter);
@@ -77,7 +77,7 @@ public class Game {
 
     private Mark readCoordinatesShot(Battlefield fieldOfPlayer) {
         while (true) {
-            String coordinates = scanner.next().toUpperCase().trim();
+            String coordinates = scanner.nextLine().toUpperCase().trim();
             try {
                 return fieldOfPlayer.markShot(coordinates);
             } catch (IllegalArgumentException e) {
@@ -90,7 +90,7 @@ public class Game {
         for (ShipTypes shipClass : ShipTypes.values()) {
             System.out.printf("Enter the coordinates of the %s (%d cells):%n", shipClass.getType(), shipClass.getCell());
             while (true) {
-                String[] coordinates = new String[]{scanner.next().toUpperCase(), scanner.next().toUpperCase()};
+                String[] coordinates = scanner.nextLine().trim().toUpperCase().split(" ");        //Here we change next()
                 try {
                     fieldOfPlayer.placeShip(shipClass, coordinates);
                     break;
@@ -103,6 +103,6 @@ public class Game {
     }
 
     private void clearScreen() {
-        for (int i = 0; i < 50; ++i) System.out.println();
+        for (int i = 0; i < CLEAR_SCREEN; ++i) System.out.println();
     }
 }

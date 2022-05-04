@@ -3,8 +3,8 @@ package org.battleship.equipment;
 public class Cell {
     private final int x;
     private final int y;
-    boolean pointedFire;
-    boolean placedShip;
+    private boolean pointedFire;
+    private boolean placedShip;
 
     public Cell(int x, int y, boolean placedShip) {
         this.x = x;
