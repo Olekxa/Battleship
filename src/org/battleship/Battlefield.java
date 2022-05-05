@@ -6,23 +6,33 @@ import java.util.*;
 
 public class Battlefield {
     private final Cell[][] fieldOfBattle;
-    private final List<Ship> fleet;
 
     protected Battlefield() {
-        this.fleet = new ArrayList<>();
         this.fieldOfBattle = new Cell[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
         for (int i = 0; i < fieldOfBattle.length; i++) {
             for (int j = 0; j < fieldOfBattle[i].length; j++) {
-                fieldOfBattle[i][j] = new Cell(i, j, false);
+                fieldOfBattle[i][j] = new Cell(i, j);
             }
         }
     }
 
     protected boolean checkIsAliveFleet() {
-        return fleet.stream().anyMatch(Ship::isShipAlive);
+        for (Cell[] cells : fieldOfBattle) {
+            for (Cell cell : cells) {
+                if (cell.getShip() != null && cell.getShip().isShipAlive()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     protected void placeShip(ShipTypes shipClass, String[] coordinates) {
+        if (Constant.MAGIC_NUMBER < coordinates.length
+                || "".equals(coordinates[0])
+                || "".equals(coordinates[1])) {
+            throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
+        }
         var x = fromCharToInt(coordinates[0].charAt(0));
         var y = Integer.parseInt(coordinates[0].substring(1)) - 1;
         var x1 = fromCharToInt(coordinates[1].charAt(0));
@@ -49,21 +59,27 @@ public class Battlefield {
         checkNeighbors(start, end);
 
         List<Cell> locationOfShip = new ArrayList<>();
+        Ship ship = new Ship(shipClass, locationOfShip);
+
         if (Constant.VERTICAL == positionInSpace) {
             for (int i = start[1]; i <= end[1]; i++) {
-                fieldOfBattle[start[0]][i].setPlacedShip(true);
-                locationOfShip.add(new Cell(start[0], i, true));
+                fieldOfBattle[start[0]][i].setShip(ship);
+                Cell point = fieldOfBattle[start[0]][i];
+                locationOfShip.add(point);
             }
         } else {
             for (int i = start[0]; i <= end[0]; i++) {
-                fieldOfBattle[i][start[1]].setPlacedShip(true);
-                locationOfShip.add(new Cell(i, start[1], true));
+                fieldOfBattle[i][start[1]].setShip(ship);
+                Cell point = fieldOfBattle[i][start[1]];
+                locationOfShip.add(point);
             }
         }
-        fleet.add(new Ship(shipClass, locationOfShip));
     }
 
     protected Mark markShot(String coordinates) {
+        if (coordinates.length() < 2 || coordinates.length() > 3) {
+            throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
+        }
         var x = fromCharToInt(coordinates.charAt(0));
         var y = Integer.parseInt(coordinates.substring(1)) - 1;
 
@@ -72,7 +88,7 @@ public class Battlefield {
             throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
         }
         mark(x, y);
-        if (fieldOfBattle[x][y].isPlacedShip() || fieldOfBattle[x][y].isPointedFire()) {
+        if (fieldOfBattle[x][y].getShip() != null && fieldOfBattle[x][y].isPointedFire()) {
             fieldOfBattle[x][y].setPointedFire(true);
             if (isShipSank(x, y) && checkIsAliveFleet()) {
                 return Mark.GAME_CONTINUOUS_SINK_SHIP;
@@ -84,14 +100,19 @@ public class Battlefield {
     }
 
     private boolean isShipSank(int x, int y) {
-        return fleet.stream()
-                .filter(z -> z.exist(x, y))
-                .noneMatch(Ship::isShipAlive);
+        for (Cell[] cells : fieldOfBattle) {
+            for (Cell cell : cells) {
+                if (cell.getX() == x && cell.getY() == y && cell.getShip() != null) {
+                    return !cell.getShip().isShipAlive();
+                }
+            }
+        }
+        return false;
     }
 
     private void mark(int x, int y) {
-        for (Ship ship : fleet) {
-            for (Cell cell : ship.getCompartments()) {
+        for (Cell[] cells : fieldOfBattle) {
+            for (Cell cell : cells) {
                 if (cell.getX() == x && cell.getY() == y) {
                     cell.setPointedFire(true);
                 }
@@ -118,13 +139,13 @@ public class Battlefield {
                 }
                 Designations mark;
                 if (fieldOfBattle[i][j].isPointedFire()) {
-                    if (fieldOfBattle[i][j].isPlacedShip()) {
+                    if (fieldOfBattle[i][j].getShip() != null) {
                         mark = Designations.HIT;
                     } else {
                         mark = Designations.MISS;
                     }
                 } else {
-                    if (fieldOfBattle[i][j].isPlacedShip()) {
+                    if (fieldOfBattle[i][j].getShip() != null) {
                         mark = designations;
                     } else {
                         mark = Designations.FOG;
@@ -146,7 +167,7 @@ public class Battlefield {
 
         for (int a = startPosX; a <= endPosX; a++) {
             for (int b = startPosY; b <= endPosY; b++) {
-                if (fieldOfBattle[a][b].isPlacedShip()) {
+                if (fieldOfBattle[a][b].getShip() != null) {
                     throw new IllegalArgumentException("Error! You placed it too close to another one. Try again:");
                 }
             }
@@ -158,7 +179,7 @@ public class Battlefield {
     }
 
     private char fromIntToChar(int i) {
-        return (char) ('A' + i );
+        return (char) ('A' + i);
     }
 }
 
