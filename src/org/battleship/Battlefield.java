@@ -3,9 +3,11 @@ package org.battleship;
 import org.battleship.equipment.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Battlefield {
     private final Cell[][] fieldOfBattle;
+    List<Ship> fleet;
 
     protected Battlefield() {
         this.fieldOfBattle = new Cell[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
@@ -13,22 +15,16 @@ public class Battlefield {
             for (int j = 0; j < fieldOfBattle[i].length; j++) {
                 fieldOfBattle[i][j] = new Cell(i, j);
             }
+            fleet = new ArrayList<>();
         }
     }
 
     protected boolean checkIsAliveFleet() {
-        for (Cell[] cells : fieldOfBattle) {
-            for (Cell cell : cells) {
-                if (cell.getShip() != null && cell.getShip().isShipAlive()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return fleet.stream().anyMatch(Ship::statusOfShip);
     }
 
     protected void placeShip(ShipTypes shipClass, String[] coordinates) {
-        if (Constant.MAGIC_NUMBER < coordinates.length
+        if (Constant.ACCEPTED_LENGTH < coordinates.length
                 || "".equals(coordinates[0])
                 || "".equals(coordinates[1])) {
             throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
@@ -60,7 +56,7 @@ public class Battlefield {
 
         List<Cell> locationOfShip = new ArrayList<>();
         Ship ship = new Ship(shipClass, locationOfShip);
-
+        fleet.add(ship);
         if (Constant.VERTICAL == positionInSpace) {
             for (int i = start[1]; i <= end[1]; i++) {
                 fieldOfBattle[start[0]][i].setShip(ship);
@@ -100,14 +96,7 @@ public class Battlefield {
     }
 
     private boolean isShipSank(int x, int y) {
-        for (Cell[] cells : fieldOfBattle) {
-            for (Cell cell : cells) {
-                if (cell.getX() == x && cell.getY() == y && cell.getShip() != null) {
-                    return !cell.getShip().isShipAlive();
-                }
-            }
-        }
-        return false;
+        return !fieldOfBattle[x][y].isShipAlive();
     }
 
     private void mark(int x, int y) {

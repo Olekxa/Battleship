@@ -13,14 +13,12 @@ public class Cell {
         this.pointedFire = false;
     }
 
-    public Cell(int x, int y, Ship ship) {
-        this.x = x;
-        this.y = y;
-        this.ship = ship;
-    }
-
     public Ship getShip() {
         return ship;
+    }
+
+    public boolean isShipAlive() {
+        return ship.statusOfShip();
     }
 
     public void setShip(Ship ship) {

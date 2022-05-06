@@ -9,7 +9,7 @@ public class Ship {
         this.compartments = compartments;
     }
 
-    public boolean isShipAlive() {
+    public boolean statusOfShip() {
         return compartments.stream()
                 .anyMatch(x -> !x.isPointedFire());
     }

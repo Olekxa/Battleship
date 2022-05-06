@@ -2,10 +2,14 @@ package org.battleship;
 
 import org.battleship.equipment.Mark;
 import org.battleship.equipment.ShipTypes;
-
 import java.util.Scanner;
 
-import static org.battleship.equipment.Constant.*;
+import static org.battleship.equipment.Constant.DELIMITER;
+import static org.battleship.equipment.Constant.PLAYER_ONE;
+import static org.battleship.equipment.Constant.PLAYER_TWO;
+import static org.battleship.equipment.Constant.CLEAR_SCREEN;
+import static org.battleship.equipment.Constant.PASS_MOVE;
+
 
 public class Game {
     private final Battlefield battlefieldPlayer;
