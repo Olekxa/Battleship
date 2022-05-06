@@ -1,8 +1,8 @@
 package org.battleship;
 
 import org.battleship.equipment.*;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Battlefield {
     private final Cell[][] fieldOfBattle;
