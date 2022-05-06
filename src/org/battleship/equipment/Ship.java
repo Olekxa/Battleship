@@ -14,4 +14,7 @@ public class Ship {
                 .anyMatch(x -> !x.isPointedFire());
     }
 
+    public List<Cell> getCompartments() {
+        return compartments;
+    }
 }

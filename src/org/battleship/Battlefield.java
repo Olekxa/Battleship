@@ -8,14 +8,6 @@ public class  Battlefield {
     private final Cell[][] fieldOfBattle;
     private List<Ship> fleet;
 
-    public String displayPrimary() {
-        return draw(fieldOfBattle, Designations.CELL);
-    }
-
-    public String displayEnemy() {
-        return draw(fieldOfBattle, Designations.FOG);
-    }
-
     protected Battlefield() {
         this.fieldOfBattle = new Cell[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
         for (int i = 0; i < fieldOfBattle.length; i++) {
@@ -24,6 +16,14 @@ public class  Battlefield {
             }
             fleet = new ArrayList<>();
         }
+    }
+
+    public String displayPrimary() {
+        return draw(fieldOfBattle, Designations.CELL);
+    }
+
+    public String displayEnemy() {
+        return draw(fieldOfBattle, Designations.FOG);
     }
 
     protected boolean checkIsAliveFleet() {
