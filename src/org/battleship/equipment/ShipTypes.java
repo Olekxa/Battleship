@@ -1,9 +1,9 @@
 package org.battleship.equipment;
 
 public enum ShipTypes {
-    //   AIRCRAFT_CARRIER(5, "Aircraft Carrier");
-//    BATTLESHIP(4, "Battleship"),
-//    SUBMARINE(3, "Submarine"),
+    AIRCRAFT_CARRIER(5, "Aircraft Carrier"),
+    BATTLESHIP(4, "Battleship"),
+    SUBMARINE(3, "Submarine"),
     CRUISER(3, "Cruiser"),
     DESTROYER(2, "Destroyer");
 

@@ -3,7 +3,6 @@ package org.battleship;
 import org.battleship.equipment.*;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class Battlefield {
     private final Cell[][] fieldOfBattle;
@@ -54,18 +53,18 @@ public class Battlefield {
         }
         checkNeighbors(start, end);
         List<Cell> locationOfShip = new ArrayList<>();
-        Ship ship = new Ship(shipClass, locationOfShip);
+        Ship ship = new Ship(shipClass, locationOfShip);//move
         fleet.add(ship);
         if (Constant.VERTICAL == positionInSpace) {
             for (int i = start[1]; i <= end[1]; i++) {
-                fieldOfBattle[start[0]][i].setShip(ship);
                 Cell point = fieldOfBattle[start[0]][i];
+                point.setShip(ship);
                 locationOfShip.add(point);
             }
         } else {
             for (int i = start[0]; i <= end[0]; i++) {
-                fieldOfBattle[i][start[1]].setShip(ship);
                 Cell point = fieldOfBattle[i][start[1]];
+                point.setShip(ship);
                 locationOfShip.add(point);
             }
         }
