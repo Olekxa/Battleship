@@ -4,9 +4,17 @@ import org.battleship.equipment.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Battlefield {
+public class  Battlefield {
     private final Cell[][] fieldOfBattle;
     private List<Ship> fleet;
+
+    public String displayPrimary() {
+        return draw(fieldOfBattle, Designations.CELL);
+    }
+
+    public String displayEnemy() {
+        return draw(fieldOfBattle, Designations.FOG);
+    }
 
     protected Battlefield() {
         this.fieldOfBattle = new Cell[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
@@ -99,14 +107,6 @@ public class Battlefield {
 
     private void mark(int x, int y) {
         fieldOfBattle[x][y].setPointedFire(true);
-    }
-
-    public String displayPrimary() {
-        return draw(fieldOfBattle, Designations.CELL);
-    }
-
-    public String displayEnemy() {
-        return draw(fieldOfBattle, Designations.FOG);
     }
 
     private String draw(Cell[][] fieldOfBattle, Designations designations) {

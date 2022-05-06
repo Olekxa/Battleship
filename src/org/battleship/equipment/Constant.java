@@ -13,6 +13,4 @@ public class Constant {
     public final static int HORIZONTAL = 0;
     public final static int CLEAR_SCREEN = 50;
     public final static int ACCEPTED_LENGTH = 2;
-
-
 }

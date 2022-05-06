@@ -7,8 +7,8 @@ public enum ShipTypes {
     CRUISER(3, "Cruiser"),
     DESTROYER(2, "Destroyer");
 
-    final int cell;
-    final String type;
+    private final int cell;
+    private final String type;
 
     ShipTypes(int cell, String type) {
         this.cell = cell;
