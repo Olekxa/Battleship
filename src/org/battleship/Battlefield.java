@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 public class Battlefield {
     private final Cell[][] fieldOfBattle;
-    List<Ship> fleet;
+    private List<Ship> fleet;
 
     protected Battlefield() {
         this.fieldOfBattle = new Cell[Constant.FIELD_SIZE][Constant.FIELD_SIZE];
@@ -53,7 +53,6 @@ public class Battlefield {
             throw new IllegalArgumentException("Error! Wrong length of the ship! Try again:");
         }
         checkNeighbors(start, end);
-
         List<Cell> locationOfShip = new ArrayList<>();
         Ship ship = new Ship(shipClass, locationOfShip);
         fleet.add(ship);
@@ -100,13 +99,7 @@ public class Battlefield {
     }
 
     private void mark(int x, int y) {
-        for (Cell[] cells : fieldOfBattle) {
-            for (Cell cell : cells) {
-                if (cell.getX() == x && cell.getY() == y) {
-                    cell.setPointedFire(true);
-                }
-            }
-        }
+        fieldOfBattle[x][y].setPointedFire(true);
     }
 
     public String displayPrimary() {
